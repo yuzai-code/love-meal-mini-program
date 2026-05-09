@@ -1,0 +1,87 @@
+<!-- pages/manage/manage.wxml -->
+<view class='page'>
+  <view class='header'>
+    <text class='title'>⚙️ 菜品管理</text>
+    <view class='add-btn' bindtap='onAddDish'>+ 添加菜品</view>
+  </view>
+
+  <view class='dish-list'>
+    <view wx:for='{{dishes}}' wx:key='id' class='dish-card'>
+      <image class='dish-img' src='{{item.image}}' mode='aspectFill'></image>
+      <view class='dish-info'>
+        <view class='dish-top'>
+          <view>
+            <text class='dish-name'>{{item.name}}</text>
+            <text class='dish-price'>¥{{item.price}}</text>
+          </view>
+          <view wx:if='{{item.isPopular}}' class='popular-badge'>❤️</view>
+        </view>
+        <text class='dish-category'>{{item.category}}</text>
+        <text class='dish-desc'>{{item.description}}</text>
+      </view>
+      <view class='dish-actions'>
+        <view class='action-edit' bindtap='onEditDish' data-dish='{{item}}'>编辑</view>
+        <view class='action-delete' bindtap='onDeleteDish' data-dishid='{{item.id}}'>删除</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if='{{dishes.length === 0}}' class='empty'>
+    <text>还没有菜品，点击上方「+ 添加菜品」开始</text>
+  </view>
+
+  <!-- 表单弹窗 -->
+  <view wx:if='{{showForm}}' class='form-popup'>
+    <view class='form-mask' bindtap='onCloseForm'></view>
+    <view class='form-content'>
+      <view class='form-header'>
+        <text>{{editingDish ? '编辑菜品' : '添加菜品'}}</text>
+        <text class='close-btn' bindtap='onCloseForm'>×</text>
+      </view>
+
+      <scroll-view scroll-y class='form-body'>
+        <view class='form-item'>
+          <text class='label'>菜品名称 *</text>
+          <input data-field='name' value='{{formData.name}}' bindinput='onInput' placeholder='如：红烧肉' />
+        </view>
+
+        <view class='form-item'>
+          <text class='label'>价格 (元) *</text>
+          <input data-field='price' value='{{formData.price}}' bindinput='onInput' type='digit' placeholder='28' />
+        </view>
+
+        <view class='form-item'>
+          <text class='label'>分类</text>
+          <picker mode='selector' range='{{categories}}' bindchange='onCategoryChange'>
+            <view class='picker-value'>{{formData.category}}</view>
+          </picker>
+        </view>
+
+        <view class='form-item'>
+          <text class='label'>描述</text>
+          <input data-field='description' value='{{formData.description}}' bindinput='onInput' placeholder='简短描述...' />
+        </view>
+
+        <view class='form-item'>
+          <text class='label'>📖 食材</text>
+          <textarea data-field='ingredients' value='{{formData.ingredients}}' bindinput='onInput' placeholder='每行一种食材&#10;如：五花肉 500g&#10;生抽 2勺' auto-height />
+        </view>
+
+        <view class='form-item'>
+          <text class='label'>👨‍🍳 做法步骤</text>
+          <textarea data-field='steps' value='{{formData.steps}}' bindinput='onInput' placeholder='每行一步&#10;如：1. 五花肉切块焯水&#10;2. 热锅下冰糖炒色' auto-height />
+        </view>
+
+        <view class='form-item checkbox-item'>
+          <checkbox-group bindchange='onInput' data-field='isPopular'>
+            <label><checkbox value='true' checked='{{formData.isPopular}}'/>设为爱心推荐 ❤️</label>
+          </checkbox-group>
+        </view>
+      </scroll-view>
+
+      <view class='form-footer'>
+        <view class='save-btn' bindtap='onSave'>保存</view>
+      </view>
+    </view>
+  </view>
+</view>

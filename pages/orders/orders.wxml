@@ -1,0 +1,38 @@
+<!-- pages/orders/orders.wxml -->
+<view class='page'>
+  <view class='filter-bar'>
+    <view class='filter-item {{filter === "all" ? "active" : ""}}' bindtap='onFilterChange' data-filter='all'>全部</view>
+    <view class='filter-item {{filter === "pending" ? "active" : ""}}' bindtap='onFilterChange' data-filter='pending'>待接单</view>
+    <view class='filter-item {{filter === "accepted" ? "active" : ""}}' bindtap='onFilterChange' data-filter='accepted'>制作中</view>
+    <view class='filter-item {{filter === "completed" ? "active" : ""}}' bindtap='onFilterChange' data-filter='completed'>已完成</view>
+  </view>
+
+  <view class='order-list'>
+    <view wx:for='{{currentOrders}}' wx:key='id' class='order-card'>
+      <view class='order-header'>
+        <text class='order-id'>订单号: {{item.id}}</text>
+        <view class='status-tag status-{{item.status}}'>
+          {{item.status === 'pending' ? '⏳ 待接单' : item.status === 'accepted' ? '👨‍🍳 制作中' : '✅ 已完成'}}
+        </view>
+      </view>
+      <view class='order-items'>
+        <view wx:for='{{item.items}}' wx:for-item='food' wx:key='dishId' class='order-item'>
+          <text>{{food.name}}</text><text>× {{food.num}}</text>
+          <text class='item-price'>¥{{food.price * food.num}}</text>
+        </view>
+      </view>
+      <view wx:if='{{item.note}}' class='order-note'>💬 {{item.note}}</view>
+      <view wx:if='{{item.address}}' class='order-address'>📍 {{item.address}}</view>
+      <view class='order-footer'>
+        <text class='order-time'>{{item.createTime}}</text>
+        <text class='order-total'>合计: ¥{{item.totalPrice}}</text>
+      </view>
+      <view class='order-actions'>
+        <view wx:if='{{item.status === "pending"}}' class='action-btn accept' bindtap='acceptOrder' data-orderid='{{item.id}}'>接单</view>
+        <view wx:if='{{item.status === "accepted"}}' class='action-btn complete' bindtap='completeOrder' data-orderid='{{item.id}}'>完成</view>
+        <view class='action-btn detail' bindtap='goDetail' data-orderid='{{item.id}}'>详情</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if='{{currentOrders.length === 0}}' class='empty'><text>暂无订单</text></view>
+</view>
