@@ -1,0 +1,101 @@
+/* pages/detail/detail.wxss */
+.page {
+  padding: 30rpx;
+  padding-bottom: 200rpx;
+}
+
+.section {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 25rpx;
+  color: #333;
+}
+
+.dish-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.dish-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.dish-thumb {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 15rpx;
+}
+
+.dish-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.dish-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.dish-price {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.dish-subtotal {
+  font-size: 30rpx;
+  color: #ff6b9d;
+  font-weight: bold;
+}
+
+.input {
+  background: #f5f5f5;
+  border-radius: 15rpx;
+  padding: 25rpx 30rpx;
+  font-size: 28rpx;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
+}
+
+.total {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.total .price {
+  color: #ff6b9d;
+  font-weight: bold;
+  font-size: 38rpx;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #ff6b9d 0%, #ff8e8e 100%);
+  color: #fff;
+  padding: 25rpx 60rpx;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 8rpx 25rpx rgba(255, 107, 157, 0.3);
+}

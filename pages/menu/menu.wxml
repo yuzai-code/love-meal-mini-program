@@ -1,0 +1,94 @@
+<!-- pages/menu/menu.wxml -->
+<view class='page'>
+  <!-- 分类导航 -->
+  <scroll-view class='category-nav' scroll-x>
+    <view 
+      wx:for='{{categories}}' 
+      wx:key='*this'
+      class='category-item {{currentCategory === item ? "active" : ""}}'
+      bindtap='onCategoryChange'
+      data-category='{{item}}'
+    >
+      {{item}}
+    </view>
+  </scroll-view>
+
+  <!-- 常点推荐 -->
+  <view wx:if='{{popularDishes.length > 0 && currentCategory === "全部"}}' class='popular-section'>
+    <view class='section-title'>⭐ 我的常点</view>
+    <scroll-view class='popular-list' scroll-x>
+      <view 
+        wx:for='{{popularDishes}}' 
+        wx:key='*this'
+        class='popular-item'
+        bindtap='goDetail'
+        data-dishid='{{item}}'
+      >
+        <text>{{item}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 菜品列表 -->
+  <view class='dish-list'>
+    <view 
+      wx:for='{{filteredDishes}}' 
+      wx:key='id'
+      class='dish-card'
+    >
+      <image class='dish-image' src='{{item.image}}' mode='aspectFill'></image>
+      <view class='dish-info'>
+        <view class='dish-header'>
+          <text class='dish-name'>{{item.name}}</text>
+          <text wx:if='{{item.isPopular}}' class='popular-tag'>❤️</text>
+        </view>
+        <text class='dish-desc'>{{item.description}}</text>
+        <view class='dish-footer'>
+          <text class='price'>¥{{item.price}}</text>
+          <view class='add-btn' bindtap='addToCart' data-dish='{{item}}'>+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if='{{filteredDishes.length === 0}}' class='empty'>
+    <text>暂无菜品，去 ⚙️ 管理页添加吧～</text>
+  </view>
+
+  <!-- 购物车悬浮按钮 -->
+  <view wx:if='{{cartCount > 0}}' class='cart-bar' bindtap='toggleCart'>
+    <view class='cart-info'>
+      <text class='cart-icon'>🛒</text>
+      <text class='cart-badge'>{{cartCount}}</text>
+    </view>
+    <text class='cart-total'>¥{{totalPrice}}</text>
+    <view class='checkout-btn' bindtap='goCheckout'>去结算</view>
+  </view>
+
+  <!-- 购物车弹出层 -->
+  <view wx:if='{{showCart}}' class='cart-popup'>
+    <view class='cart-mask' bindtap='toggleCart'></view>
+    <view class='cart-content'>
+      <view class='cart-header'>
+        <text>已选菜品</text>
+        <text class='clear-btn' bindtap='clearCart'>清空</text>
+      </view>
+      <view class='cart-items'>
+        <view wx:for='{{cart}}' wx:key='dishId' class='cart-item'>
+          <text class='cart-item-name'>{{item.name}}</text>
+          <text class='cart-item-price'>¥{{item.price}}</text>
+          <view class='cart-item-controls'>
+            <text bindtap='reduceFromCart' data-dishid='{{item.dishId}}'>-</text>
+            <text>{{item.num}}</text>
+            <text bindtap='addToCart' data-dish='{{item}}'>+</text>
+          </view>
+        </view>
+      </view>
+      <view class='cart-footer'>
+        <text>合计: ¥{{totalPrice}}</text>
+        <view class='checkout-btn' bindtap='goCheckout'>去结算</view>
+      </view>
+    </view>
+  </view>
+</view>

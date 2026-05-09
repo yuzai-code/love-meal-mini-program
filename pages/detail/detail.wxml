@@ -1,0 +1,44 @@
+<!-- pages/detail/detail.wxml -->
+<view class='page'>
+  <view class='section'>
+    <view class='section-title'>🍽️ 已选菜品</view>
+    <view class='dish-list'>
+      <view wx:for='{{dishes}}' wx:key='dishId' class='dish-item'>
+        <image class='dish-thumb' src='{{item.image}}' mode='aspectFill'></image>
+        <view class='dish-info'>
+          <text class='dish-name'>{{item.name}}</text>
+          <text class='dish-price'>¥{{item.price}} × {{item.num || 1}}</text>
+        </view>
+        <text class='dish-subtotal'>¥{{item.price * (item.num || 1)}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class='section'>
+    <view class='section-title'>💬 备注</view>
+    <input 
+      class='input' 
+      placeholder='有什么想吃的可以告诉我哦～比如"少盐""加辣"'
+      value='{{note}}'
+      bindinput='onNoteInput'
+    />
+  </view>
+
+  <view class='section'>
+    <view class='section-title'>📍 送餐地点</view>
+    <input 
+      class='input' 
+      placeholder='在哪里吃呢？'
+      value='{{address}}'
+      bindinput='onAddressInput'
+    />
+  </view>
+
+  <view class='footer'>
+    <view class='total'>
+      <text>合计: </text>
+      <text class='price'>¥{{totalPrice}}</text>
+    </view>
+    <view class='submit-btn' bindtap='submitOrder'>❤️ 提交订单</view>
+  </view>
+</view>
