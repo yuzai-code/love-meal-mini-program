@@ -19,19 +19,19 @@
     "list": [
       {
         "pagePath": "pages/menu/menu",
-        "text": "🍽️ 点餐",
+        "text": "点餐",
         "iconPath": "images/menu.png",
         "selectedIconPath": "images/menu_active.png"
       },
       {
         "pagePath": "pages/orders/orders",
-        "text": "📦 订单",
+        "text": "订单",
         "iconPath": "images/orders.png",
         "selectedIconPath": "images/orders_active.png"
       },
       {
         "pagePath": "pages/manage/manage",
-        "text": "⚙️ 管理",
+        "text": "管理",
         "iconPath": "images/manage.png",
         "selectedIconPath": "images/manage_active.png"
       }
