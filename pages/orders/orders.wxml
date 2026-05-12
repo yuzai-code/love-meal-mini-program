@@ -36,3 +36,6 @@
   </view>
   <view wx:if='{{currentOrders.length === 0}}' class='empty'><text>暂无订单</text></view>
 </view>
+
+<!-- 自定义 Tab Bar -->
+<custom-tab-bar />

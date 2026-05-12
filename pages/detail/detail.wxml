@@ -39,6 +39,6 @@
       <text>合计: </text>
       <text class='price'>¥{{totalPrice}}</text>
     </view>
-    <view class='submit-btn' bindtap='submitOrder'>❤️ 提交订单</view>
+    <view class='submit-btn' hover-class='none' bindtap='submitOrder'>❤️ 提交订单</view>
   </view>
 </view>

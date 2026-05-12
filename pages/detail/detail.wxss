@@ -98,4 +98,10 @@
   font-size: 32rpx;
   font-weight: bold;
   box-shadow: 0 8rpx 25rpx rgba(255, 107, 157, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submit-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 15rpx rgba(255, 107, 157, 0.2);
 }

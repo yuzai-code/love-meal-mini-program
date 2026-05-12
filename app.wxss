@@ -6,6 +6,11 @@ page {
   color: #333;
 }
 
+/* 页面底部留白给自定义 Tab Bar */
+.page {
+  padding-bottom: 160rpx;
+}
+
 /* 通用容器 */
 .container {
   padding: 30rpx;
