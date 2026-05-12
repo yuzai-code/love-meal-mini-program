@@ -123,7 +123,7 @@ Page({
     });
   },
 
-  // 选择图片并上传
+  // 选择图片并上传到微信云存储
   onChooseImage() {
     wx.chooseImage({
       count: 1,
@@ -133,30 +133,40 @@ Page({
         const tempFilePath = res.tempFilePaths[0];
         wx.showLoading({ title: '上传中...' });
         
-        // 上传到 x0.at 免费图床（全球CDN，国内可用）
-        wx.uploadFile({
-          url: 'https://x0.at',
+        // 上传到微信云存储
+        const cloudPath = 'dish-images/' + Date.now() + '.jpg';
+        
+        wx.cloud.uploadFile({
+          cloudPath: cloudPath,
           filePath: tempFilePath,
-          name: 'file',
           success: uploadRes => {
             wx.hideLoading();
-            // x0.at 返回的是纯文本 URL
-            const imageUrl = uploadRes.data.trim();
-            if (imageUrl.startsWith('https://')) {
-              this.setData({ ['formData.image']: imageUrl });
-              wx.showToast({ title: '图片上传成功', icon: 'success' });
-            } else {
-              // 上传失败，使用本地临时路径
-              this.setData({ ['formData.image']: tempFilePath });
-              wx.showToast({ title: '图片已选择', icon: 'none' });
-            }
+            const fileID = uploadRes.fileID;
+            
+            // 获取永久访问链接
+            wx.cloud.getTempFileURL({
+              fileList: [fileID],
+              success: urlRes => {
+                if (urlRes.fileList && urlRes.fileList[0].tempFileURL) {
+                  this.setData({ ['formData.image']: urlRes.fileList[0].tempFileURL });
+                  wx.showToast({ title: '图片上传成功', icon: 'success' });
+                } else {
+                  // 临时链接获取失败，使用 fileID（微信会自动转换）
+                  this.setData({ ['formData.image']: fileID });
+                  wx.showToast({ title: '图片已上传', icon: 'success' });
+                }
+              },
+              fail: err => {
+                console.error('获取链接失败', err);
+                this.setData({ ['formData.image']: fileID });
+                wx.showToast({ title: '图片已上传', icon: 'success' });
+              }
+            });
           },
           fail: err => {
             wx.hideLoading();
             console.error('上传失败', err);
-            // 上传失败时使用本地临时路径
-            this.setData({ ['formData.image']: tempFilePath });
-            wx.showToast({ title: '图片已选择', icon: 'none' });
+            wx.showToast({ title: '上传失败，请重试', icon: 'none' });
           }
         });
       }
