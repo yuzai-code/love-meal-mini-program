@@ -27,13 +27,13 @@ page {
 
 /* 按钮样式 */
 .btn-primary {
-  background: linear-gradient(135deg, #ff6b9d 0%, #ff8e8e 100%);
+  background: linear-gradient(135deg, #FF6347 0%, #E5533D 100%);
   color: #fff;
   border: none;
   border-radius: 50rpx;
   padding: 20rpx 60rpx;
   font-size: 28rpx;
-  box-shadow: 0 8rpx 20rpx rgba(255, 107, 157, 0.3);
+  box-shadow: 0 8rpx 20rpx rgba(255, 99, 71, 0.3);
 }
 
 .btn-primary::after {
@@ -42,8 +42,8 @@ page {
 
 .btn-secondary {
   background: #fff;
-  color: #ff6b9d;
-  border: 2rpx solid #ff6b9d;
+  color: #FF6347;
+  border: 2rpx solid #FF6347;
   border-radius: 50rpx;
   padding: 20rpx 60rpx;
   font-size: 28rpx;
@@ -60,7 +60,7 @@ page {
 
 /* 价格文字 */
 .price {
-  color: #ff6b9d;
+  color: #FF6347;
   font-weight: bold;
   font-size: 32rpx;
 }
@@ -68,8 +68,8 @@ page {
 /* 标签 */
 .tag {
   display: inline-block;
-  background: #fff0f5;
-  color: #ff6b9d;
+  background: #fff0f0;
+  color: #FF6347;
   padding: 8rpx 20rpx;
   border-radius: 30rpx;
   font-size: 22rpx;

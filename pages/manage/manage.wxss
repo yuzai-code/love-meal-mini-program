@@ -2,7 +2,7 @@
 .page { min-height: 100vh; background: #fafafa; padding: 30rpx; }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40rpx; }
 .title { font-size: 36rpx; font-weight: bold; color: #333; }
-.add-btn { background: linear-gradient(135deg, #ff6b9d 0%, #ff8e8e 100%); color: #fff; padding: 15rpx 35rpx; border-radius: 40rpx; font-size: 28rpx; }
+.add-btn { background: linear-gradient(135deg, #FF6347 0%, #E5533D 100%); color: #fff; padding: 15rpx 35rpx; border-radius: 40rpx; font-size: 28rpx; }
 
 .dish-list { display: flex; flex-direction: column; gap: 25rpx; }
 .dish-card { background: #fff; border-radius: 20rpx; padding: 25rpx; display: flex; gap: 20rpx; box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05); }
@@ -10,14 +10,14 @@
 .dish-info { flex: 1; display: flex; flex-direction: column; gap: 8rpx; }
 .dish-top { display: flex; justify-content: space-between; align-items: flex-start; }
 .dish-name { font-size: 30rpx; font-weight: bold; color: #333; margin-right: 15rpx; }
-.dish-price { font-size: 28rpx; color: #ff6b9d; font-weight: bold; }
+.dish-price { font-size: 28rpx; color: #FF6347; font-weight: bold; }
 .popular-badge { font-size: 28rpx; }
 .dish-category { font-size: 22rpx; color: #999; }
 .dish-desc { font-size: 24rpx; color: #666; margin-top: 5rpx; }
 .dish-actions { display: flex; flex-direction: column; gap: 15rpx; justify-content: center; }
 .action-edit, .action-delete { font-size: 24rpx; padding: 10rpx 25rpx; border-radius: 20rpx; text-align: center; }
 .action-edit { background: #f0f0f0; color: #666; }
-.action-delete { background: #fff0f0; color: #ff6b9d; }
+.action-delete { background: #fff0f0; color: #FF6347; }
 
 .empty { text-align: center; padding: 200rpx 0; color: #999; font-size: 28rpx; }
 
@@ -36,4 +36,4 @@
 .checkbox-item { flex-direction: row; align-items: center; }
 .checkbox-item label { display: flex; align-items: center; gap: 10rpx; font-size: 28rpx; }
 .form-footer { padding: 30rpx 40rpx; border-top: 1rpx solid #f0f0f0; }
-.save-btn { background: linear-gradient(135deg, #ff6b9d 0%, #ff8e8e 100%); color: #fff; text-align: center; padding: 28rpx; border-radius: 50rpx; font-size: 32rpx; font-weight: bold; }
+.save-btn { background: linear-gradient(135deg, #FF6347 0%, #E5533D 100%); color: #fff; text-align: center; padding: 28rpx; border-radius: 50rpx; font-size: 32rpx; font-weight: bold; }

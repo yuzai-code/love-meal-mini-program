@@ -7,17 +7,15 @@
   background: #ffffff;
   z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1rpx solid #EEEEEE;
 }
 
 .tab-bar-content {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 110rpx;
-  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  border-radius: 30rpx 30rpx 0 0;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
-  margin: 0 16rpx;
+  height: 100rpx;
+  background: #ffffff;
   padding: 0 20rpx;
 }
 
@@ -29,7 +27,6 @@
   flex: 1;
   height: 100%;
   padding: 10rpx 0;
-  transition: all 0.3s ease;
   position: relative;
 }
 
@@ -45,40 +42,31 @@
 .tab-icon {
   width: 48rpx;
   height: 48rpx;
-  transition: all 0.3s ease;
 }
 
 .icon-indicator {
   position: absolute;
-  bottom: -6rpx;
+  bottom: -8rpx;
   left: 50%;
   transform: translateX(-50%);
-  width: 8rpx;
-  height: 8rpx;
-  background: #ff6b9d;
-  border-radius: 50%;
-  animation: indicatorPulse 2s ease-in-out infinite;
-}
-
-@keyframes indicatorPulse {
-  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
-  50% { opacity: 0.6; transform: translateX(-50%) scale(0.8); }
+  width: 48rpx;
+  height: 2rpx;
+  background: #FF6347;
+  border-radius: 1rpx;
 }
 
 .tab-text {
   font-size: 22rpx;
   color: #999999;
   margin-top: 6rpx;
-  transition: all 0.3s ease;
   font-weight: 500;
 }
 
 .tab-item.active .tab-icon {
-  transform: scale(1.15);
 }
 
 .tab-item.active .tab-text {
-  color: #ff6b9d;
+  color: #FF6347;
   font-weight: 600;
   font-size: 24rpx;
 }
