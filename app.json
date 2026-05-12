@@ -12,7 +12,17 @@
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
-    "custom": true
+    "custom": true,
+    "list": [{
+      "pagePath": "pages/menu/menu",
+      "text": "点餐"
+    }, {
+      "pagePath": "pages/orders/orders",
+      "text": "订单"
+    }, {
+      "pagePath": "pages/manage/manage",
+      "text": "管理"
+    }]
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
