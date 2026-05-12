@@ -22,7 +22,7 @@
 .empty { text-align: center; padding: 200rpx 0; color: #999; font-size: 28rpx; }
 
 /* 表单弹窗 */
-.form-popup { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999; }
+.form-popup { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1001; }
 .form-mask { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); }
 .form-content { 
   position: absolute; 
