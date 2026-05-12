@@ -36,6 +36,13 @@ Component({
     }
   },
 
+  pageLifetimes: {
+    show() {
+      // 每次页面显示时更新选中状态
+      this.setData({ selected: this.getTabBarSelected() });
+    }
+  },
+
   methods: {
     switchTab(e) {
       const index = e.currentTarget.dataset.index;
@@ -55,7 +62,11 @@ Component({
       if (!currentPage) return 0;
       
       const route = currentPage.route || currentPage.__route__;
-      const index = this.data.list.findIndex(item => item.pagePath.includes(route));
+      // 精确匹配：提取 pagePath 中的页面名称进行对比
+      const index = this.data.list.findIndex(item => {
+        const pageName = item.pagePath.split('/pages/')[1]; // e.g. 'menu/menu'
+        return pageName === route || pageName.startsWith(route + '/');
+      });
       return index > -1 ? index : 0;
     }
   }
