@@ -1,0 +1,9 @@
+{
+  "name": "uploadImage",
+  "version": "1.0.0",
+  "description": "上传图片到腾讯云COS",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "cos-nodejs-sdk-v5": "^2.13.0"
+  }
+}

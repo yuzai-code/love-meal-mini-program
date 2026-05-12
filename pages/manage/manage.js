@@ -123,7 +123,7 @@ Page({
     });
   },
 
-  // 选择图片并上传到微信云存储
+  // 选择图片并上传到腾讯云COS
   onChooseImage() {
     wx.chooseImage({
       count: 1,
@@ -133,40 +133,40 @@ Page({
         const tempFilePath = res.tempFilePaths[0];
         wx.showLoading({ title: '上传中...' });
         
-        // 上传到微信云存储
-        const cloudPath = 'dish-images/' + Date.now() + '.jpg';
-        
-        wx.cloud.uploadFile({
-          cloudPath: cloudPath,
+        // 读取图片文件并转为 base64
+        wx.getFileSystemManager().readFile({
           filePath: tempFilePath,
-          success: uploadRes => {
-            wx.hideLoading();
-            const fileID = uploadRes.fileID;
+          encoding: 'base64',
+          success: readRes => {
+            const fileContent = readRes.data;
             
-            // 获取永久访问链接
-            wx.cloud.getTempFileURL({
-              fileList: [fileID],
-              success: urlRes => {
-                if (urlRes.fileList && urlRes.fileList[0].tempFileURL) {
-                  this.setData({ ['formData.image']: urlRes.fileList[0].tempFileURL });
+            // 调用云函数上传到腾讯云COS
+            wx.cloud.callFunction({
+              name: 'uploadImage',
+              data: {
+                fileContent: fileContent,
+                fileName: tempFilePath.split('/').pop()
+              },
+              success: callRes => {
+                wx.hideLoading();
+                if (callRes.result && callRes.result.success) {
+                  this.setData({ ['formData.image']: callRes.result.url });
                   wx.showToast({ title: '图片上传成功', icon: 'success' });
                 } else {
-                  // 临时链接获取失败，使用 fileID（微信会自动转换）
-                  this.setData({ ['formData.image']: fileID });
-                  wx.showToast({ title: '图片已上传', icon: 'success' });
+                  wx.showToast({ title: callRes.result.error || '上传失败', icon: 'none' });
                 }
               },
               fail: err => {
-                console.error('获取链接失败', err);
-                this.setData({ ['formData.image']: fileID });
-                wx.showToast({ title: '图片已上传', icon: 'success' });
+                wx.hideLoading();
+                console.error('云函数调用失败', err);
+                wx.showToast({ title: '上传失败，请重试', icon: 'none' });
               }
             });
           },
           fail: err => {
             wx.hideLoading();
-            console.error('上传失败', err);
-            wx.showToast({ title: '上传失败，请重试', icon: 'none' });
+            console.error('读取文件失败', err);
+            wx.showToast({ title: '读取图片失败', icon: 'none' });
           }
         });
       }
