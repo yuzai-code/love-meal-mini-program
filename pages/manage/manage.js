@@ -133,35 +133,33 @@ Page({
         const tempFilePath = res.tempFilePaths[0];
         wx.showLoading({ title: '上传中...' });
         
-        // 上传到 imgbb 图床
+        // 上传到 catbox.moe 免费图床（无需 API key）
         wx.uploadFile({
-          url: 'https://api.imgbb.com/1/upload?key=c5e9a4c8e3a5c6d7e9f0a1b2c3d4e5f6',
+          url: 'https://catbox.moe/user/api.php',
           filePath: tempFilePath,
-          name: 'image',
+          name: 'file',
+          formData: {
+            'reqtype': 'fileupload'
+          },
           success: uploadRes => {
             wx.hideLoading();
-            try {
-              const data = JSON.parse(uploadRes.data);
-              if (data.success) {
-                this.setData({ ['formData.image']: data.data.url });
-                wx.showToast({ title: '图片上传成功', icon: 'success' });
-              } else {
-                // imgbb 上传失败，使用本地临时路径作为 fallback
-                this.setData({ ['formData.image']: tempFilePath });
-                wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
-              }
-            } catch (e) {
-              // 解析失败，使用本地临时路径
+            // catbox 返回的是纯文本 URL
+            const imageUrl = uploadRes.data.trim();
+            if (imageUrl.startsWith('https://')) {
+              this.setData({ ['formData.image']: imageUrl });
+              wx.showToast({ title: '图片上传成功', icon: 'success' });
+            } else {
+              // 上传失败，使用本地临时路径
               this.setData({ ['formData.image']: tempFilePath });
-              wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
+              wx.showToast({ title: '图片已选择', icon: 'none' });
             }
           },
           fail: err => {
             wx.hideLoading();
             console.error('上传失败', err);
-            // 上传失败时使用本地临时路径作为 fallback
+            // 上传失败时使用本地临时路径
             this.setData({ ['formData.image']: tempFilePath });
-            wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
+            wx.showToast({ title: '图片已选择', icon: 'none' });
           }
         });
       }
