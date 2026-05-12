@@ -16,10 +16,11 @@ Page({
 
   onLoad() {
     this.loadDishes();
+    this.calculatePopularDishes();
   },
 
   onShow() {
-    this.loadDishes();
+    // 只在页面重新显示时刷新常点数据，避免重复加载
     this.calculatePopularDishes();
   },
 
