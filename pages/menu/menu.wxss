@@ -7,13 +7,8 @@
 
 /* 分类导航 */
 .category-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   background: #fff;
   white-space: nowrap;
-  z-index: 100;
   padding: 20rpx 0;
   box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
 }
@@ -34,7 +29,6 @@
 
 /* 常点推荐 */
 .popular-section {
-  margin-top: 100rpx;
   padding: 30rpx;
 }
 
