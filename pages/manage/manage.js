@@ -133,17 +133,14 @@ Page({
         const tempFilePath = res.tempFilePaths[0];
         wx.showLoading({ title: '上传中...' });
         
-        // 上传到 catbox.moe 免费图床（无需 API key）
+        // 上传到 x0.at 免费图床（全球CDN，国内可用）
         wx.uploadFile({
-          url: 'https://catbox.moe/user/api.php',
+          url: 'https://x0.at',
           filePath: tempFilePath,
           name: 'file',
-          formData: {
-            'reqtype': 'fileupload'
-          },
           success: uploadRes => {
             wx.hideLoading();
-            // catbox 返回的是纯文本 URL
+            // x0.at 返回的是纯文本 URL
             const imageUrl = uploadRes.data.trim();
             if (imageUrl.startsWith('https://')) {
               this.setData({ ['formData.image']: imageUrl });
