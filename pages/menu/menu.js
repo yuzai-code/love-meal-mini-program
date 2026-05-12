@@ -20,7 +20,9 @@ Page({
   },
 
   onShow() {
-    // 只在页面重新显示时刷新常点数据，避免重复加载
+    // 每次显示页面都刷新菜品数据，确保从管理页添加的菜品能显示
+    this.loadDishes();
+    // 只在页面重新显示时刷新常点数据
     this.calculatePopularDishes();
   },
 

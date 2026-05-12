@@ -39,14 +39,12 @@ Component({
   methods: {
     switchTab(e) {
       const index = e.currentTarget.dataset.index;
+      if (index === this.data.selected) return; // 防止重复切换
+      
       const url = this.data.list[index].pagePath;
       
-      // 先更新状态视觉反馈，再切换
-      this.setData({ selected: index });
-      
-      setTimeout(() => {
-        wx.switchTab({ url });
-      }, 50);
+      // 先切换页面，页面切换后 attached 会自动更新 selected 状态
+      wx.switchTab({ url });
     },
 
     getTabBarSelected() {
