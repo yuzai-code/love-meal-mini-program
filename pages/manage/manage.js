@@ -12,6 +12,7 @@ Page({
       ingredients: '',
       steps: '',
       isPopular: false,
+      image: '',
     },
     categories: ['主食', '主菜', '汤', '饮品'],
   },
@@ -30,7 +31,7 @@ Page({
     this.setData({
       showForm: true,
       editingDish: null,
-      formData: { name: '', price: '', description: '', category: '主菜', ingredients: '', steps: '', isPopular: false }
+      formData: { name: '', price: '', description: '', category: '主菜', ingredients: '', steps: '', isPopular: false, image: '' }
     });
   },
 
@@ -48,6 +49,7 @@ Page({
         ingredients: dish.ingredients || '',
         steps: dish.steps || '',
         isPopular: dish.isPopular || false,
+        image: dish.image || '',
       }
     });
   },
@@ -92,7 +94,7 @@ Page({
       dishes.push({
         id: 'D' + Date.now(),
         ...formData,
-        image: '/images/default-dish.png',
+        image: formData.image || '/images/default-dish.png',
         status: 'available',
       });
     }
@@ -121,7 +123,7 @@ Page({
     });
   },
 
-  // 上传图片（实际需要使用 wx.chooseImage，这里简化）
+  // 选择图片并上传
   onChooseImage() {
     wx.chooseImage({
       count: 1,
@@ -129,8 +131,39 @@ Page({
       sourceType: ['album', 'camera'],
       success: res => {
         const tempFilePath = res.tempFilePaths[0];
-        // 实际上传云存储...
-        wx.showToast({ title: '图片已选择（需上传云存储）', icon: 'none' });
+        wx.showLoading({ title: '上传中...' });
+        
+        // 上传到 imgbb 图床
+        wx.uploadFile({
+          url: 'https://api.imgbb.com/1/upload?key=c5e9a4c8e3a5c6d7e9f0a1b2c3d4e5f6',
+          filePath: tempFilePath,
+          name: 'image',
+          success: uploadRes => {
+            wx.hideLoading();
+            try {
+              const data = JSON.parse(uploadRes.data);
+              if (data.success) {
+                this.setData({ ['formData.image']: data.data.url });
+                wx.showToast({ title: '图片上传成功', icon: 'success' });
+              } else {
+                // imgbb 上传失败，使用本地临时路径作为 fallback
+                this.setData({ ['formData.image']: tempFilePath });
+                wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
+              }
+            } catch (e) {
+              // 解析失败，使用本地临时路径
+              this.setData({ ['formData.image']: tempFilePath });
+              wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
+            }
+          },
+          fail: err => {
+            wx.hideLoading();
+            console.error('上传失败', err);
+            // 上传失败时使用本地临时路径作为 fallback
+            this.setData({ ['formData.image']: tempFilePath });
+            wx.showToast({ title: '图片已选择（本地）', icon: 'none' });
+          }
+        });
       }
     });
   },

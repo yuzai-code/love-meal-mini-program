@@ -58,6 +58,17 @@
         </view>
 
         <view class='form-item'>
+          <text class='label'>📷 菜品图片</text>
+          <view class='image-upload' bindtap='onChooseImage'>
+            <image wx:if='{{formData.image}}' class='uploaded-image' src='{{formData.image}}' mode='aspectFill' />
+            <view wx:else class='upload-placeholder'>
+              <text class='upload-icon'>+</text>
+              <text class='upload-text'>点击上传图片</text>
+            </view>
+          </view>
+        </view>
+
+        <view class='form-item'>
           <text class='label'>描述</text>
           <input data-field='description' value='{{formData.description}}' bindinput='onInput' placeholder='简短描述...' />
         </view>
