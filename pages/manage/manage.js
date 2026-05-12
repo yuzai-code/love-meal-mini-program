@@ -140,13 +140,14 @@ Page({
           success: readRes => {
             const fileContent = readRes.data;
             
-            // 调用云函数上传到腾讯云COS
+            // 调用云函数上传到腾讯云COS（增加超时）
             wx.cloud.callFunction({
               name: 'uploadImage',
               data: {
                 fileContent: fileContent,
                 fileName: tempFilePath.split('/').pop()
               },
+              timeout: 30000,  // 30秒超时
               success: callRes => {
                 wx.hideLoading();
                 if (callRes.result && callRes.result.success) {
@@ -159,7 +160,7 @@ Page({
               fail: err => {
                 wx.hideLoading();
                 console.error('云函数调用失败', err);
-                wx.showToast({ title: '上传失败，请重试', icon: 'none' });
+                wx.showToast({ title: '云函数调用失败，请检查网络', icon: 'none' });
               }
             });
           },
