@@ -64,12 +64,16 @@
 
         <view class='form-item'>
           <text class='label'>📖 食材</text>
-          <textarea data-field='ingredients' value='{{formData.ingredients}}' bindinput='onInput' placeholder='每行一种食材&#10;如：五花肉 500g&#10;生抽 2勺' auto-height />
+          <textarea data-field='ingredients' value='{{formData.ingredients}}' bindinput='onInput' placeholder='每行一种食材
+如：五花肉 500g
+生抽 2勺' auto-height />
         </view>
 
         <view class='form-item'>
           <text class='label'>👨‍🍳 做法步骤</text>
-          <textarea data-field='steps' value='{{formData.steps}}' bindinput='onInput' placeholder='每行一步&#10;如：1. 五花肉切块焯水&#10;2. 热锅下冰糖炒色' auto-height />
+          <textarea data-field='steps' value='{{formData.steps}}' bindinput='onInput' placeholder='每行一步
+如：1. 五花肉切块焯水
+2. 热锅下冰糖炒色' auto-height />
         </view>
 
         <view class='form-item checkbox-item'>
