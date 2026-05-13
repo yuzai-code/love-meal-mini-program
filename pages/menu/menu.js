@@ -36,7 +36,8 @@ Page({
     const dishes = wx.getStorageSync('dishes') || [];
     // 只显示已上架的菜品
     const enabledDishes = dishes.filter(d => d.enabled !== false);
-    this.setData({ dishes: enabledDishes, filteredDishes: enabledDishes });
+    this.setData({ dishes: enabledDishes });
+    this.filterDishes();
   },
 
   // 计算常点菜品
@@ -80,18 +81,23 @@ Page({
     this.filterDishes();
   },
 
-  // 计算高亮文本
-  getHighlightName(dish) {
-    if (!this.data.searchKey) return dish.name;
+  // 计算高亮文本（返回片段数组）
+  getHighlightSegments(dish) {
+    if (!this.data.searchKey) {
+      return [{ text: dish.name, highlight: false }];
+    }
     const key = this.data.searchKey.toLowerCase();
     const name = dish.name;
     const lowerName = name.toLowerCase();
     const index = lowerName.indexOf(key);
-    if (index === -1) return name;
-    const before = name.slice(0, index);
-    const matched = name.slice(index, index + key.length);
-    const after = name.slice(index + key.length);
-    return `${before}<span class="highlight">${matched}</span>${after}`;
+    if (index === -1) {
+      return [{ text: dish.name, highlight: false }];
+    }
+    const segments = [];
+    if (index > 0) segments.push({ text: name.slice(0, index), highlight: false });
+    segments.push({ text: name.slice(index, index + key.length), highlight: true });
+    if (index + key.length < name.length) segments.push({ text: name.slice(index + key.length), highlight: false });
+    return segments;
   },
 
   // 筛选菜品
@@ -101,14 +107,14 @@ Page({
     if (this.data.currentCategory !== '全部') {
       dishes = dishes.filter(d => d.category === this.data.currentCategory);
     }
-    // 搜索筛选（按菜品名称模糊匹配）并计算高亮文本
+    // 搜索筛选（按菜品名称模糊匹配）并计算高亮片段
     if (this.data.searchKey) {
       const key = this.data.searchKey.toLowerCase();
       dishes = dishes
         .filter(d => d.name.toLowerCase().includes(key))
-        .map(d => ({ ...d, nameHighlighted: this.getHighlightName(d) }));
+        .map(d => ({ ...d, nameSegments: this.getHighlightSegments(d) }));
     } else {
-      dishes = dishes.map(d => ({ ...d, nameHighlighted: d.name }));
+      dishes = dishes.map(d => ({ ...d, nameSegments: [{ text: d.name, highlight: false }] }));
     }
     this.setData({ filteredDishes: dishes });
   },

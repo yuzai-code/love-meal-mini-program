@@ -72,6 +72,7 @@ Page({
       totalPrice,
       note: order.note || '',
       address: order.address || '',
+      isOrderView: true,
     });
   },
 

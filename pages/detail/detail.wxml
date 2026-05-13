@@ -39,6 +39,7 @@
       <text>合计: </text>
       <text class='price'>¥{{totalPrice}}</text>
     </view>
-    <view class='submit-btn' hover-class='none' bindtap='submitOrder'>❤️ 提交订单</view>
+    <view wx:if='{{isOrderView}}' class='submit-btn reorder-btn' hover-class='none' bindtap='reorder'>再来一单</view>
+    <view wx:else class='submit-btn' hover-class='none' bindtap='submitOrder'>❤️ 提交订单</view>
   </view>
 </view>
