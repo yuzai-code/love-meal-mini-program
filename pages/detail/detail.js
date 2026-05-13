@@ -9,6 +9,7 @@ Page({
     totalPrice: 0,
     note: '',
     address: '',
+    isOrderView: false,
   },
 
   onLoad(options) {
@@ -18,6 +19,9 @@ Page({
     } else if (options.dishid) {
       this.setData({ fromCart: false });
       this.loadSingleDish(options.dishid);
+    } else if (options.orderid) {
+      this.setData({ fromCart: true });
+      this.loadOrderData(options.orderid);
     }
   },
 
@@ -44,6 +48,69 @@ Page({
         dishes: [{ ...dish, num: 1, dishId: dish.id }]
       });
     }
+  },
+
+  // 加载历史订单数据（用于再来一单）
+  loadOrderData(orderId) {
+    const orders = wx.getStorageSync('orders') || [];
+    const order = orders.find(o => o.id === orderId);
+    if (!order) return;
+
+    const dishes = wx.getStorageSync('dishes') || [];
+    const cartItems = order.items.map(item => {
+      const dish = dishes.find(d => d.id === item.dishId);
+      return { 
+        ...item, 
+        image: dish ? dish.image : '', 
+        description: dish ? dish.description : '' 
+      };
+    });
+
+    const totalPrice = order.items.reduce((sum, item) => sum + item.price * item.num, 0);
+    this.setData({ 
+      dishes: cartItems, 
+      totalPrice,
+      note: order.note || '',
+      address: order.address || '',
+    });
+  },
+
+  // 再来一单（从详情页操作）
+  reorder() {
+    const { dishes } = this.data;
+    let cart = wx.getStorageSync('cart') || [];
+    const unavailable = [];
+
+    dishes.forEach(item => {
+      if (!item.image && !item.description) {
+        // 没有图片和描述说明是已下架的菜品
+        unavailable.push(item.name);
+        return;
+      }
+      const idx = cart.findIndex(c => c.dishId === (item.dishId || item.id));
+      if (idx > -1) {
+        cart[idx].num += item.num || 1;
+      } else {
+        cart.push({
+          dishId: item.dishId || item.id,
+          name: item.name,
+          price: item.price,
+          num: item.num || 1,
+        });
+      }
+    });
+
+    wx.setStorageSync('cart', cart);
+
+    if (unavailable.length > 0) {
+      wx.showModal({
+        title: '⚠️ 部分商品无法加入',
+        content: '以下菜品已下架：' + unavailable.join('、'),
+        showCancel: false,
+      });
+    }
+
+    wx.navigateTo({ url: '/pages/detail/detail?from=cart' });
   },
 
   onNoteInput(e) {

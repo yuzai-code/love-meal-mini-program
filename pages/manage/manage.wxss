@@ -14,10 +14,15 @@
 .popular-badge { font-size: 28rpx; }
 .dish-category { font-size: 22rpx; color: #999; }
 .dish-desc { font-size: 24rpx; color: #666; margin-top: 5rpx; }
-.dish-actions { display: flex; flex-direction: column; gap: 15rpx; justify-content: center; }
+.dish-actions { display: flex; flex-direction: column; gap: 15rpx; justify-content: center; align-items: center; }
 .action-edit, .action-delete { font-size: 24rpx; padding: 10rpx 25rpx; border-radius: 20rpx; text-align: center; }
 .action-edit { background: #f0f0f0; color: #666; }
 .action-delete { background: #fff0f0; color: #FF6347; }
+
+/* 下架样式 */
+.dish-disabled { opacity: 0.6; }
+.dish-disabled .dish-img { filter: grayscale(100%); }
+.disabled-tag { background: #999; color: #fff; font-size: 20rpx; padding: 4rpx 15rpx; border-radius: 10rpx; align-self: flex-start; margin-top: 5rpx; }
 
 .empty { text-align: center; padding: 200rpx 0; color: #999; font-size: 28rpx; }
 

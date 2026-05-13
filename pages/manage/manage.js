@@ -96,6 +96,7 @@ Page({
         ...formData,
         image: formData.image || '/images/default-dish.png',
         status: 'available',
+        enabled: true,
       });
     }
 
@@ -121,6 +122,22 @@ Page({
         }
       }
     });
+  },
+
+  // 切换菜品上架/下架状态
+  onToggleEnabled(e) {
+    const dishId = e.currentTarget.dataset.dishid;
+    const dishes = wx.getStorageSync('dishes') || [];
+    const index = dishes.findIndex(d => d.id === dishId);
+    if (index > -1) {
+      dishes[index].enabled = !dishes[index].enabled;
+      wx.setStorageSync('dishes', dishes);
+      this.loadDishes();
+      wx.showToast({
+        title: dishes[index].enabled ? '已上架' : '已下架',
+        icon: 'success'
+      });
+    }
   },
 
   // 选择图片并上传到腾讯云COS

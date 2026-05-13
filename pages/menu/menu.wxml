@@ -1,5 +1,17 @@
 <!-- pages/menu/menu.wxml -->
 <view class='page'>
+  <!-- 搜索框 -->
+  <view class='search-bar'>
+    <input
+      class='search-input'
+      placeholder='搜索菜品名称'
+      value='{{searchKey}}'
+      bindinput='onSearchInput'
+      bindconfirm='onSearchInput'
+    />
+    <text wx:if='{{searchKey}}' class='search-clear' bindtap='onSearchClear'>×</text>
+  </view>
+
   <!-- 分类导航 -->
   <scroll-view class='category-nav' scroll-x>
     <view 

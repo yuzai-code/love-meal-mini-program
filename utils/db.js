@@ -16,7 +16,8 @@ function initSampleData() {
       steps: '1. 五花肉切块，冷水下锅焯水\n2. 热锅下冰糖，小火炒至焦糖色\n3. 下五花肉翻炒上色\n4. 加生抽、老抽、八角、水\n5. 大火烧开转小火炖1小时',
       isPopular: true,
       image: '/images/default-dish.png',
-      status: 'available'
+      status: 'available',
+      enabled: true
     },
     {
       id: 'D002',
@@ -28,7 +29,8 @@ function initSampleData() {
       steps: '1. 排骨切段焯水\n2. 炸至金黄捞出\n3. 调糖醋汁\n4. 下锅翻炒均匀',
       isPopular: true,
       image: '/images/default-dish.png',
-      status: 'available'
+      status: 'available',
+      enabled: true
     },
     {
       id: 'D003',
@@ -40,7 +42,8 @@ function initSampleData() {
       steps: '1. 鸡蛋打散炒熟盛出\n2. 西红柿切块炒出汁\n3. 加盐、糖调味\n4. 下鸡蛋翻炒均匀',
       isPopular: false,
       image: '/images/default-dish.png',
-      status: 'available'
+      status: 'available',
+      enabled: true
     },
     {
       id: 'D004',
@@ -52,7 +55,8 @@ function initSampleData() {
       steps: '1. 水烧开\n2. 紫菜洗净放入\n3. 蛋液慢慢淋入\n4. 加盐调味，撒葱花',
       isPopular: false,
       image: '/images/default-dish.png',
-      status: 'available'
+      status: 'available',
+      enabled: true
     }
   ];
 

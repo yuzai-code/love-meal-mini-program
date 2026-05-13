@@ -12,9 +12,14 @@ Page({
     totalPrice: 0,
     showCart: false,
     popularDishes: [], // 常点菜品
+    searchKey: '',     // 搜索关键词
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 从 url 参数读取搜索词
+    if (options.searchKey) {
+      this.setData({ searchKey: decodeURIComponent(options.searchKey) });
+    }
     this.loadDishes();
     this.calculatePopularDishes();
   },
@@ -29,7 +34,9 @@ Page({
   // 加载菜品数据
   loadDishes() {
     const dishes = wx.getStorageSync('dishes') || [];
-    this.setData({ dishes, filteredDishes: dishes });
+    // 只显示已上架的菜品
+    const enabledDishes = dishes.filter(d => d.enabled !== false);
+    this.setData({ dishes: enabledDishes, filteredDishes: enabledDishes });
   },
 
   // 计算常点菜品
@@ -53,6 +60,19 @@ Page({
     this.setData({ popularDishes: sorted });
   },
 
+  // 搜索输入
+  onSearchInput(e) {
+    const searchKey = e.detail.value;
+    this.setData({ searchKey });
+    this.filterDishes();
+  },
+
+  // 清除搜索
+  onSearchClear() {
+    this.setData({ searchKey: '' });
+    this.filterDishes();
+  },
+
   // 切换分类
   onCategoryChange(e) {
     const category = e.currentTarget.dataset.category;
@@ -60,11 +80,35 @@ Page({
     this.filterDishes();
   },
 
+  // 计算高亮文本
+  getHighlightName(dish) {
+    if (!this.data.searchKey) return dish.name;
+    const key = this.data.searchKey.toLowerCase();
+    const name = dish.name;
+    const lowerName = name.toLowerCase();
+    const index = lowerName.indexOf(key);
+    if (index === -1) return name;
+    const before = name.slice(0, index);
+    const matched = name.slice(index, index + key.length);
+    const after = name.slice(index + key.length);
+    return `${before}<span class="highlight">${matched}</span>${after}`;
+  },
+
   // 筛选菜品
   filterDishes() {
     let dishes = this.data.dishes;
+    // 分类筛选
     if (this.data.currentCategory !== '全部') {
       dishes = dishes.filter(d => d.category === this.data.currentCategory);
+    }
+    // 搜索筛选（按菜品名称模糊匹配）并计算高亮文本
+    if (this.data.searchKey) {
+      const key = this.data.searchKey.toLowerCase();
+      dishes = dishes
+        .filter(d => d.name.toLowerCase().includes(key))
+        .map(d => ({ ...d, nameHighlighted: this.getHighlightName(d) }));
+    } else {
+      dishes = dishes.map(d => ({ ...d, nameHighlighted: d.name }));
     }
     this.setData({ filteredDishes: dishes });
   },
