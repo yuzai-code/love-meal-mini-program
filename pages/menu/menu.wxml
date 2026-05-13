@@ -51,7 +51,9 @@
       <image class='dish-image' src='{{item.image}}' mode='aspectFill'></image>
       <view class='dish-info'>
         <view class='dish-header'>
-          <text class='dish-name'>{{item.name}}</text>
+          <text class='dish-name'>
+            <text wx:for='{{item.nameSegments}}' wx:for-item='seg' wx:key='{{index}}' class='{{seg.highlight ? "dish-name-highlight" : ""}}'>{{seg.text}}</text>
+          </text>
           <text wx:if='{{item.isPopular}}' class='popular-tag'>❤️</text>
         </view>
         <text class='dish-desc'>{{item.description}}</text>
