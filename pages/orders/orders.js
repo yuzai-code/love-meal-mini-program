@@ -8,17 +8,10 @@ Page({
     currentOrders: [],
   },
 
-  onShow() {
-    this.loadOrders();
-  },
-
   onLoad() {
-    this.loadOrders();
-  },
-
-  loadOrders() {
     const orders = wx.getStorageSync('orders') || [];
-    this.setData({ orders, currentOrders: orders });
+    this.setData({ orders });
+    this.filterOrders(); // 应用当前 filter，避免 onShow 重复刷
   },
 
   // 切换筛选
