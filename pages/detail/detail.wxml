@@ -26,12 +26,15 @@
 
   <view class='section'>
     <view class='section-title'>📍 送餐地点</view>
-    <input 
-      class='input' 
-      placeholder='在哪里吃呢？'
-      value='{{address}}'
-      bindinput='onAddressInput'
-    />
+    <view class='address-picker'>
+      <input 
+        class='input {{address ? "" : "input-empty"}}' 
+        placeholder='在哪里吃呢？'
+        value='{{address}}'
+        bindinput='onAddressInput'
+      />
+      <view class='choose-address-btn' bindtap='chooseAddress'>📍 获取地址</view>
+    </view>
   </view>
 
   <view class='footer'>

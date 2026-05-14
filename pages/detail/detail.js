@@ -122,6 +122,19 @@ Page({
     this.setData({ address: e.detail.value });
   },
 
+  // 选择微信收货地址
+  chooseAddress() {
+    wx.chooseAddress({
+      success: (res) => {
+        const fullAddress = res.provinceName + res.cityName + res.countyName + res.detailInfo;
+        this.setData({ address: fullAddress });
+      },
+      fail: (err) => {
+        wx.showToast({ title: '已取消，可手动输入', icon: 'none', duration: 2000 });
+      }
+    });
+  },
+
   // 提交订单
   submitOrder() {
     const { dishes, totalPrice, note, address } = this.data;
