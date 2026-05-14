@@ -183,4 +183,10 @@ Page({
     this.updateCart([]);
     this.setData({ showCart: false });
   },
+
+  // 跳转详情页（T7修复：menu.wxml的bindtap=goDetail原本死链接）
+  goDetail(e) {
+    const dishId = e.currentTarget.dataset.dishid;
+    wx.navigateTo({ url: '/pages/detail/detail?dishid=' + dishId });
+  },
 });

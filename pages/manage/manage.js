@@ -59,11 +59,14 @@ Page({
     this.setData({ showForm: false });
   },
 
-  // 输入处理
+  // 输入处理（T9修复：价格负数截断 + 保存时>0验证）
   onInput(e) {
     const field = e.currentTarget.dataset.field;
     let value = e.detail.value;
-    if (field === 'price') value = parseFloat(value) || 0;
+    if (field === 'price') {
+      value = parseFloat(value) || 0;
+      if (value < 0) value = 0; // 负数截断为0
+    }
     if (field === 'isPopular') value = e.detail.value.length > 0;
     this.setData({ ['formData.' + field]: value });
   },
@@ -75,11 +78,15 @@ Page({
     this.setData({ ['formData.category']: categories[index] });
   },
 
-  // 保存菜品
+  // 保存菜品（T9修复：价格必须>0）
   onSave() {
     const { formData, editingDish } = this.data;
     if (!formData.name || !formData.price) {
       wx.showToast({ title: '请填写名称和价格', icon: 'none' });
+      return;
+    }
+    if (parseFloat(formData.price) <= 0) {
+      wx.showToast({ title: '价格必须大于0', icon: 'none' });
       return;
     }
 

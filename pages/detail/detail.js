@@ -83,8 +83,8 @@ Page({
     const unavailable = [];
 
     dishes.forEach(item => {
-      if (!item.image && !item.description) {
-        // 没有图片和描述说明是已下架的菜品
+      if (item.enabled === false) {
+        // enabled===false 说明已下架
         unavailable.push(item.name);
         return;
       }

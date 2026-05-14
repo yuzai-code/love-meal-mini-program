@@ -72,11 +72,16 @@ Page({
     });
   },
 
-  // 更新订单状态
+  // 更新订单状态（T11修复：增加statusHistory记录每次状态变更时间）
   updateOrderStatus(orderId, status, cancelReason) {
     const orders = wx.getStorageSync('orders') || [];
     const index = orders.findIndex(o => o.id === orderId);
     if (index > -1) {
+      const now = new Date().toLocaleString('zh-CN');
+      if (!orders[index].statusHistory) {
+        orders[index].statusHistory = [];
+      }
+      orders[index].statusHistory.push({ status, time: now });
       orders[index].status = status;
       if (status === 'cancelled' && cancelReason) {
         orders[index].cancelReason = cancelReason;
