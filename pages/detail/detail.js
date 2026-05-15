@@ -83,8 +83,10 @@ Page({
     const unavailable = [];
 
     dishes.forEach(item => {
-      if (item.enabled === false) {
-        // enabled===false 说明已下架
+      // 检查菜品是否已下架：优先用 enabled 字段，若无则查 dishes 存储
+      const dishesStore = wx.getStorageSync('dishes') || [];
+      const originalDish = dishesStore.find(d => d.id === (item.dishId || item.id));
+      if (originalDish && originalDish.enabled === false) {
         unavailable.push(item.name);
         return;
       }

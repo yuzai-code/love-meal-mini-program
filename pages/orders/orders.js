@@ -93,8 +93,8 @@ Page({
         ? orders
         : orders.filter(o => o.status === this.data.filter);
       this.setData({ orders, currentOrders: displayOrders });
-      const statusMsg = status === 'cancelled' ? '已取消' : status === 'completed' ? '已完成' : '已接单';
-      wx.showToast({ title: status === 'cancelled' ? '❌ 已取消' : '✅ ' + statusMsg, icon: 'success' });
+      const statusMsg = status === 'cancelled' ? '❌ 已取消' : status === 'accepted' ? '✅ 已接单' : '✅ 已完成';
+      wx.showToast({ title: statusMsg, icon: 'success' });
     }
   },
 
