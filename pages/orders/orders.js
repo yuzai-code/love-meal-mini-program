@@ -9,9 +9,18 @@ Page({
   },
 
   onLoad() {
+    this.loadOrders();
+  },
+
+  onShow() {
+    // 每次显示页面都刷新订单数据，确保状态同步
+    this.loadOrders();
+  },
+
+  loadOrders() {
     const orders = wx.getStorageSync('orders') || [];
     this.setData({ orders });
-    this.filterOrders(); // 应用当前 filter，避免 onShow 重复刷
+    this.filterOrders();
   },
 
   // 切换筛选

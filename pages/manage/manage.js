@@ -1,6 +1,9 @@
 // pages/manage/manage.js
+const app = getApp();
+
 Page({
   data: {
+    isAuthorized: false, // 权限校验标记
     dishes: [],
     showForm: false,
     editingDish: null,
@@ -18,6 +21,21 @@ Page({
   },
 
   onShow() {
+    // 权限校验：只有管理员才能访问管理页
+    const isAdmin = app.globalData.isAdmin;
+    if (!isAdmin) {
+      this.setData({ isAuthorized: false });
+      wx.showModal({
+        title: '⚠️ 无权访问',
+        content: '管理功能仅对管理员开放，请联系管理员开通权限。',
+        showCancel: false,
+        success: () => {
+          wx.switchTab({ url: '/pages/menu/menu' });
+        }
+      });
+      return;
+    }
+    this.setData({ isAuthorized: true });
     this.loadDishes();
   },
 
@@ -28,6 +46,7 @@ Page({
 
   // 打开新增表单
   onAddDish() {
+    if (!this.data.isAuthorized) return;
     this.setData({
       showForm: true,
       editingDish: null,
@@ -37,6 +56,7 @@ Page({
 
   // 打开编辑表单
   onEditDish(e) {
+    if (!this.data.isAuthorized) return;
     const dish = e.currentTarget.dataset.dish;
     this.setData({
       showForm: true,
@@ -80,6 +100,7 @@ Page({
 
   // 保存菜品（T9修复：价格必须>0）
   onSave() {
+    if (!this.data.isAuthorized) return;
     const { formData, editingDish } = this.data;
     if (!formData.name || !formData.price) {
       wx.showToast({ title: '请填写名称和价格', icon: 'none' });
@@ -115,6 +136,7 @@ Page({
 
   // 删除菜品
   onDeleteDish(e) {
+    if (!this.data.isAuthorized) return;
     const dishId = e.currentTarget.dataset.dishid;
     wx.showModal({
       title: '确认删除',
@@ -133,6 +155,7 @@ Page({
 
   // 切换菜品上架/下架状态
   onToggleEnabled(e) {
+    if (!this.data.isAuthorized) return;
     const dishId = e.currentTarget.dataset.dishid;
     const dishes = wx.getStorageSync('dishes') || [];
     const index = dishes.findIndex(d => d.id === dishId);
@@ -149,6 +172,7 @@ Page({
 
   // 选择图片并上传到腾讯云COS
   onChooseImage() {
+    if (!this.data.isAuthorized) return;
     wx.chooseImage({
       count: 1,
       sizeType: ['compressed'],
@@ -156,14 +180,14 @@ Page({
       success: res => {
         const tempFilePath = res.tempFilePaths[0];
         wx.showLoading({ title: '上传中...' });
-        
+
         // 读取图片文件并转为 base64
         wx.getFileSystemManager().readFile({
           filePath: tempFilePath,
           encoding: 'base64',
           success: readRes => {
             const fileContent = readRes.data;
-            
+
             // 调用云函数上传到腾讯云COS（增加超时）
             wx.cloud.callFunction({
               name: 'uploadImage',
@@ -174,7 +198,12 @@ Page({
               timeout: 30000,  // 30秒超时
               success: callRes => {
                 wx.hideLoading();
-                if (callRes.result && callRes.result.success) {
+                // 修复：增加 callRes.result 是否存在的检查
+                if (!callRes.result) {
+                  wx.showToast({ title: '上传失败：云函数无响应', icon: 'none' });
+                  return;
+                }
+                if (callRes.result.success) {
                   this.setData({ ['formData.image']: callRes.result.url });
                   wx.showToast({ title: '图片上传成功', icon: 'success' });
                 } else {

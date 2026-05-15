@@ -213,7 +213,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 600;
+  z-index: 1001; /* 高于自定义 Tab Bar 的 z-index:1000 */
 }
 
 .cart-mask {

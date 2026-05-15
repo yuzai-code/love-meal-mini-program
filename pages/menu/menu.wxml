@@ -31,12 +31,12 @@
     <scroll-view class='popular-list' scroll-x>
       <view 
         wx:for='{{popularDishes}}' 
-        wx:key='*this'
+        wx:key='id'
         class='popular-item'
         bindtap='goDetail'
-        data-dishid='{{item}}'
+        data-dishid='{{item.id}}'
       >
-        <text>{{item}}</text>
+        <text>{{item.name}}</text>
       </view>
     </scroll-view>
   </view>

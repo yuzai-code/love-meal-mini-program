@@ -27,6 +27,11 @@ Page({
   onShow() {
     // 每次显示页面都刷新菜品数据，确保从管理页添加的菜品能显示
     this.loadDishes();
+    // 从本地存储恢复购物车数据
+    const cart = wx.getStorageSync('cart') || [];
+    const cartCount = cart.reduce((sum, item) => sum + item.num, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + item.price * item.num, 0);
+    this.setData({ cart, cartCount, totalPrice });
     // 只在页面重新显示时刷新常点数据
     this.calculatePopularDishes();
   },
@@ -40,11 +45,12 @@ Page({
     this.filterDishes();
   },
 
-  // 计算常点菜品
+  // 计算常点菜品（返回菜品对象数组，而非仅 dishId 字符串数组）
   calculatePopularDishes() {
     const orders = wx.getStorageSync('orders') || [];
+    const dishes = wx.getStorageSync('dishes') || [];
     const dishCount = {};
-    
+
     orders.forEach(order => {
       if (order.items) {
         order.items.forEach(item => {
@@ -55,10 +61,14 @@ Page({
 
     const sorted = Object.entries(dishCount)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 3)
-      .map(([dishId]) => dishId);
+      .slice(0, 3);
 
-    this.setData({ popularDishes: sorted });
+    // 将 dishId 转换为完整的菜品对象（包含 name、image），找不到的菜品跳过
+    const popularDishes = sorted
+      .map(([dishId]) => dishes.find(d => d.id === dishId))
+      .filter(Boolean);
+
+    this.setData({ popularDishes });
   },
 
   // 搜索输入
@@ -162,6 +172,7 @@ Page({
     const cartCount = cart.reduce((sum, item) => sum + item.num, 0);
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.num, 0);
     this.setData({ cart, cartCount, totalPrice });
+    wx.setStorageSync('cart', cart); // 持久化到本地，避免跳转后购物车丢失
   },
 
   // 显示/隐藏购物车
@@ -182,6 +193,7 @@ Page({
   clearCart() {
     this.updateCart([]);
     this.setData({ showCart: false });
+    wx.setStorageSync('cart', []); // 清空本地存储
   },
 
   // 跳转详情页（T7修复：menu.wxml的bindtap=goDetail原本死链接）

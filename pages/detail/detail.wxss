@@ -55,7 +55,7 @@
 
 .dish-subtotal {
   font-size: 30rpx;
-  color: #ff6b9d;
+  color: #FF6347; /* 番茄红，与全局主题色统一 */
   font-weight: bold;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .total .price {
-  color: #ff6b9d;
+  color: #FF6347; /* 番茄红，与全局主题色统一 */
   font-weight: bold;
   font-size: 38rpx;
 }
