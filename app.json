@@ -3,7 +3,8 @@
     "pages/menu/menu",
     "pages/detail/detail",
     "pages/orders/orders",
-    "pages/manage/manage"
+    "pages/manage/manage",
+    "pages/profile/profile"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,8 +21,8 @@
       "pagePath": "pages/orders/orders",
       "text": "订单"
     }, {
-      "pagePath": "pages/manage/manage",
-      "text": "管理"
+      "pagePath": "pages/profile/profile",
+      "text": "我的"
     }]
   },
   "style": "v2",

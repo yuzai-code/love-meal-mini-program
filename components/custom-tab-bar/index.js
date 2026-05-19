@@ -19,10 +19,10 @@ Component({
         selectedIcon: 'orders_active'
       },
       {
-        pagePath: '/pages/manage/manage',
-        text: '管理',
-        icon: 'manage',
-        selectedIcon: 'manage_active'
+        pagePath: '/pages/profile/profile',
+        text: '我的',
+        icon: 'profile',
+        selectedIcon: 'profile_active'
       }
     ]
   },

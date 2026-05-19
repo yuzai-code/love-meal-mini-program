@@ -1,0 +1,45 @@
+<view class="container">
+  <!-- Mode Switcher -->
+  <view class="mode-switcher">
+    <view class="switch-btn {{mode === 'cooking' ? 'active' : ''}}" bindtap="onSwitchMode" data-mode="cooking">🍳 我是商家</view>
+    <view class="switch-btn {{mode === 'ordering' ? 'active' : ''}}" bindtap="onSwitchMode" data-mode="ordering">🛒 我是顾客</view>
+  </view>
+
+  <!-- Content Area -->
+  <view class="content">
+    <!-- cooking mode cards -->
+    <block wx:if="{{mode === 'cooking'}}">
+      <view class="card" bindtap="onTapCard" data-type="manage">
+        <text class="card-icon">📋</text>
+        <text class="card-text">菜品管理</text>
+        <text class="card-arrow">›</text>
+      </view>
+      <view class="card" bindtap="onTapCard" data-type="orders">
+        <text class="card-icon">📦</text>
+        <text class="card-text">订单管理</text>
+        <text class="card-arrow">›</text>
+      </view>
+      <view class="card disabled" bindtap="onTapCard" data-type="import">
+        <text class="card-icon">📥</text>
+        <text class="card-text">导入菜品(V2)</text>
+        <text class="card-arrow">›</text>
+      </view>
+    </block>
+
+    <!-- ordering mode cards -->
+    <block wx:if="{{mode === 'ordering'}}">
+      <view class="card" bindtap="onTapCard" data-type="myorders">
+        <text class="card-icon">🧾</text>
+        <text class="card-text">我的订单</text>
+        <text class="card-arrow">›</text>
+      </view>
+      <view class="card" bindtap="onTapCard" data-type="favorite">
+        <text class="card-icon">⭐</text>
+        <text class="card-text">常用菜品</text>
+        <text class="card-arrow">›</text>
+      </view>
+    </block>
+  </view>
+
+  <custom-tab-bar />
+</view>

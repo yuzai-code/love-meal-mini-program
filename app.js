@@ -3,7 +3,7 @@ App({
   globalData: {
     userInfo: null,
     openid: null,
-    isAdmin: false, // 管理员模式（可通过管理页开启）
+    mode: 'ordering', // 'cooking' 餐饮模式(商家) | 'ordering' 点餐模式(顾客)
   },
 
   onLaunch() {
@@ -17,8 +17,22 @@ App({
       });
     }
 
+    // 恢复保存的模式
+    this.globalData.mode = this.getCurrentMode();
+
     // 获取用户信息
     this.getUserInfo();
+  },
+
+  setMode(mode) {
+    if (mode === 'cooking' || mode === 'ordering') {
+      this.globalData.mode = mode;
+      wx.setStorageSync('mode', mode);
+    }
+  },
+
+  getCurrentMode() {
+    return wx.getStorageSync('mode') || 'ordering';
   },
 
   getUserInfo() {

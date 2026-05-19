@@ -21,9 +21,9 @@ Page({
   },
 
   onShow() {
-    // 权限校验：只有管理员才能访问管理页
-    const isAdmin = app.globalData.isAdmin;
-    if (!isAdmin) {
+    // 权限校验：只有商家模式才能访问管理页
+    const mode = app.globalData.mode;
+    if (mode !== 'cooking') {
       this.setData({ isAuthorized: false });
       wx.showModal({
         title: '⚠️ 无权访问',
