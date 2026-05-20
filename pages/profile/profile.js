@@ -147,15 +147,64 @@ Page({
 
   onTapCard(e) {
     const type = e.currentTarget.dataset.type;
+    const requiredMode = e.currentTarget.dataset.mode;
+
+    // 检查当前模式是否匹配所需模式
+    if (requiredMode && this.data.mode !== requiredMode) {
+      wx.showToast({ title: '当前模式不支持此功能', icon: 'none' });
+      return;
+    }
 
     if (type === 'manage') {
       wx.navigateTo({ url: '/pages/manage/manage' });
-    } else if (type === 'orders' || type === 'myorders') {
+    } else if (type === 'orders') {
+      // 点餐模式：查看我的订单；烹饪模式：查看所有订单
+      if (this.data.mode === 'ordering') {
+        wx.switchTab({ url: '/pages/orders/orders' });
+      } else {
+        wx.switchTab({ url: '/pages/orders/orders' });
+      }
+    } else if (type === 'myorders') {
       wx.switchTab({ url: '/pages/orders/orders' });
     } else if (type === 'import') {
       wx.showToast({ title: 'V2即将上线', icon: 'none' });
     } else if (type === 'favorite') {
-      wx.showToast({ title: '功能开发中', icon: 'none' });
+      this._showFavoriteDishes();
     }
+  },
+
+  _showFavoriteDishes() {
+    // 从订单历史提取最常订购的菜品
+    const orders = wx.getStorageSync('orders') || [];
+    const dishCount = {};
+    orders.forEach(order => {
+      if (order.status === 'cancelled') return;
+      (order.items || []).forEach(item => {
+        if (!dishCount[item.dishId]) {
+          dishCount[item.dishId] = { name: item.name, count: 0, dishId: item.dishId, price: item.price };
+        }
+        dishCount[item.dishId].count += item.num;
+      });
+    });
+
+    const sorted = Object.values(dishCount)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    if (sorted.length === 0) {
+      wx.showModal({
+        title: '暂无常用菜品',
+        content: '完成几笔订单后，这里会显示你最常点的菜',
+        showCancel: false,
+      });
+      return;
+    }
+
+    const list = sorted.map((d, i) => `${i + 1}. ${d.name}（共${d.count}份）`).join('\n');
+    wx.showModal({
+      title: '🍜 常用菜品 TOP5',
+      content: list,
+      showCancel: false,
+    });
   },
 });

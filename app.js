@@ -27,12 +27,12 @@ App({
   setMode(mode) {
     if (mode === 'cooking' || mode === 'ordering') {
       this.globalData.mode = mode;
-      wx.setStorageSync('mode', mode);
+      wx.setStorageSync('app_mode', mode);
     }
   },
 
   getCurrentMode() {
-    return wx.getStorageSync('mode') || 'ordering';
+    return wx.getStorageSync('app_mode') || 'ordering';
   },
 
   getUserInfo() {

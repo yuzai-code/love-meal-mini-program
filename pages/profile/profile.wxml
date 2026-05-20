@@ -9,12 +9,12 @@
   <view class="content">
     <!-- cooking mode cards -->
     <block wx:if="{{mode === 'cooking'}}">
-      <view class="card" bindtap="onTapCard" data-type="manage">
+      <view class="card" bindtap="onTapCard" data-type="manage" data-mode="cooking">
         <text class="card-icon">📋</text>
         <text class="card-text">菜品管理</text>
         <text class="card-arrow">›</text>
       </view>
-      <view class="card" bindtap="onTapCard" data-type="orders">
+      <view class="card" bindtap="onTapCard" data-type="orders" data-mode="cooking">
         <text class="card-icon">📦</text>
         <text class="card-text">订单管理</text>
         <text class="card-arrow">›</text>
