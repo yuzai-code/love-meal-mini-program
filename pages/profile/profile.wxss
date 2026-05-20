@@ -52,6 +52,14 @@ page {
   opacity: 0.5;
 }
 
+.card-danger {
+  border: 1px solid #ff4d4f;
+}
+
+.card-danger .card-text {
+  color: #ff4d4f;
+}
+
 .card-icon {
   font-size: 20px;
   margin-right: 12px;
