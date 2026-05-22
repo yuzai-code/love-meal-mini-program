@@ -185,7 +185,8 @@ Page({
       // 点餐模式/烹饪模式均查看订单
       wx.switchTab({ url: '/pages/orders/orders' });
     } else if (type === 'import') {
-      wx.showToast({ title: 'V2即将上线', icon: 'none' });
+      // 导入功能禁用，不弹toast，让disabled样式生效即可
+      return;
     } else if (type === 'favorite') {
       this._showFavoriteDishes();
     }
