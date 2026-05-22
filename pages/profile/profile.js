@@ -182,13 +182,7 @@ Page({
     if (type === 'manage') {
       wx.navigateTo({ url: '/pages/manage/manage' });
     } else if (type === 'orders') {
-      // 点餐模式：查看我的订单；烹饪模式：查看所有订单
-      if (this.data.mode === 'ordering') {
-        wx.switchTab({ url: '/pages/orders/orders' });
-      } else {
-        wx.switchTab({ url: '/pages/orders/orders' });
-      }
-    } else if (type === 'myorders') {
+      // 点餐模式/烹饪模式均查看订单
       wx.switchTab({ url: '/pages/orders/orders' });
     } else if (type === 'import') {
       wx.showToast({ title: 'V2即将上线', icon: 'none' });
