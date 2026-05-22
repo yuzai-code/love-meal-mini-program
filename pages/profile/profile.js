@@ -22,6 +22,11 @@ Page({
 
   onLoad() {
     const mode = app.getCurrentMode();
+    // 从 storage 恢复锁定状态
+    const lockedUntil = wx.getStorageSync('mode_locked_until');
+    if (lockedUntil) {
+      this._passwordLockedUntil = lockedUntil;
+    }
     this.setData({ mode });
   },
 
@@ -123,6 +128,7 @@ Page({
             // 密码正确，重置错误计数
             self._passwordAttempts = 0;
             self._passwordLockedUntil = 0;
+            wx.removeStorageSync('mode_locked_until');
             app.setMode(targetMode);
             self.setData({ mode: targetMode });
           } else {
@@ -131,6 +137,7 @@ Page({
             if (self._passwordAttempts >= 5) {
               // 锁定1分钟
               self._passwordLockedUntil = Date.now() + 60000;
+              wx.setStorageSync('mode_locked_until', self._passwordLockedUntil);
               self._passwordAttempts = 0;
               wx.showToast({ title: '密码错误，已锁定1分钟', icon: 'none' });
             } else {
