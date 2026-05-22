@@ -1,6 +1,16 @@
 // pages/profile/profile.js
 const app = getApp();
 
+// 简单哈希：base64编码（不求强加密，只求不明文存储）
+function hashPassword(password) {
+  // btoa 在 Node.js 环境中可能不存在，这里用 Buffer
+  try {
+    return Buffer.from(password).toString('base64');
+  } catch (e) {
+    return password;
+  }
+}
+
 Page({
   data: {
     mode: 'ordering',
@@ -79,7 +89,8 @@ Page({
                   wx.showToast({ title: '两次密码不一致', icon: 'none' });
                   return;
                 }
-                wx.setStorageSync('mode_switch_password', password);
+                const hashed = hashPassword(password);
+                wx.setStorageSync('mode_switch_password', hashed);
                 app.setMode(targetMode);
                 self.setData({ mode: targetMode });
                 wx.showToast({ title: '密码设置成功', icon: 'success' });
@@ -100,10 +111,15 @@ Page({
       editable: true,
       placeholderText: '请输入4位数字密码',
       success(res) {
-        if (res.confirm && res.content) {
+          if (res.confirm && res.content) {
           const inputPwd = res.content.trim();
+          if (inputPwd.length < 4) {
+            wx.showToast({ title: '密码至少4位', icon: 'none' });
+            return;
+          }
+          const hashedInput = hashPassword(inputPwd);
           const savedPassword = wx.getStorageSync('mode_switch_password');
-          if (inputPwd === savedPassword) {
+          if (hashedInput === savedPassword) {
             // 密码正确，重置错误计数
             self._passwordAttempts = 0;
             self._passwordLockedUntil = 0;
@@ -139,6 +155,7 @@ Page({
       success(res) {
         if (res.confirm) {
           wx.removeStorageSync('mode_switch_password');
+          wx.removeStorageSync('mode_locked_until');
           wx.showToast({ title: '密码已重置', icon: 'success' });
         }
       }
