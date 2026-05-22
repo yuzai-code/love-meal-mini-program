@@ -1,14 +1,14 @@
 // pages/profile/profile.js
 const app = getApp();
 
-// 简单哈希：base64编码（不求强加密，只求不明文存储）
+// 简单混淆：4位数字密码的轻量保护（微信小程序无Buffer/btoa）
 function hashPassword(password) {
-  // btoa 在 Node.js 环境中可能不存在，这里用 Buffer
-  try {
-    return Buffer.from(password).toString('base64');
-  } catch (e) {
-    return password;
+  if (!password) return '';
+  let result = '';
+  for (let i = 0; i < password.length; i++) {
+    result += String.fromCharCode(password.charCodeAt(i) ^ 0x5A);
   }
+  return result;
 }
 
 Page({
@@ -181,7 +181,7 @@ Page({
 
     if (type === 'manage') {
       wx.navigateTo({ url: '/pages/manage/manage' });
-    } else if (type === 'orders') {
+    } else if (type === 'orders' || type === 'myorders') {
       // 点餐模式/烹饪模式均查看订单
       wx.switchTab({ url: '/pages/orders/orders' });
     } else if (type === 'import') {
